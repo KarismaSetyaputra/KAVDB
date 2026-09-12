@@ -3,129 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Siswa</title>
+    <title>Login Admin</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <!-- SDK Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        .hidden { display: none; }
-    </style>
 </head>
 <body>
 
-<!-- Form Login -->
-<div id="login-section">
-    <form id="login-form">
-        <h2>Login Admin</h2>
-        <label>Username</label>
-        <input type="text" id="username" required>
-        <label>Password</label>
-        <input type="password" id="password" required>
-        <button type="submit">Login</button>
-    </form>
-</div>
+<!-- Menggunakan JavaScript e.preventDefault() agar tidak memicu error 405 -->
+<form onsubmit="event.preventDefault(); alert('Login Berhasil! (Tampilan Demo GitHub Pages)');">
+    <h2>Login Admin</h2>
 
-<!-- Dashboard & Data Siswa -->
-<div id="dashboard-section" class="container hidden">
-    <h2>Dashboard Siswa</h2>
-    <p>Total Siswa: <strong id="total-siswa">0</strong></p>
-    <button onclick="logout()" style="width: auto; background: #d62828; margin-bottom: 15px;">Logout</button>
-    
-    <h3>Tambah Data Siswa</h3>
-    <form id="add-form" style="margin: 10px 0; width: 100%; max-width: 100%;">
-        <input type="text" id="nis" placeholder="NIS" required>
-        <input type="text" id="nama" placeholder="Nama Lengkap" required>
-        <input type="text" id="jurusan" placeholder="Jurusan" required>
-        <textarea id="alamat" placeholder="Alamat" required></textarea>
-        <button type="submit">Simpan Data</button>
-    </form>
+    <label>Username</label>
+    <input type="text" name="username" required placeholder="Masukkan username">
 
-    <table id="siswa-table">
-        <thead>
-            <tr>
-                <th>NIS</th>
-                <th>Nama</th>
-                <th>Jurusan</th>
-                <th>Alamat</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data dari Supabase akan muncul di sini -->
-        </tbody>
-    </table>
-</div>
+    <label>Password</label>
+    <input type="password" name="password" required placeholder="Masukkan password">
 
-<!-- Gelembung Background Aquatic -->
+    <button type="submit">Login</button>
+</form>
+
+<!-- Animasi Gelembung Aquatic Background -->
 <div class="bubble"></div>
 <div class="bubble"></div>
 <div class="bubble"></div>
-
-<script>
-    // GANTI DENGAN URL DAN ANON KEY SUPABASE KAMU
-    const SUPABASE_URL = 'HTTPS://PROJECT-KAMU.SUPABASE.CO';
-    const SUPABASE_KEY = 'EYJHBGCIOIJK11...';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    // Fungsi Login Sederhana (JS)
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-
-        if (user === 'admin' && pass === 'admin123') {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('dashboard-section').classList.remove('hidden');
-            loadData();
-        } else {
-            alert('Username atau Password salah!');
-        }
-    });
-
-    // Logout
-    function logout() {
-        location.reload();
-    }
-
-    // Ambil Data dari Database Supabase
-    async function loadData() {
-        let { data: siswa, error } = await _supabase.from('siswa').select('*');
-        if (error) return alert('Gagal mengambil data!');
-
-        document.getElementById('total-siswa').innerText = siswa.length;
-        const tbody = document.querySelector('#siswa-table tbody');
-        tbody.innerHTML = '';
-
-        siswa.forEach(item => {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${item.nis}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.jurusan}</td>
-                    <td>${item.alamat}</td>
-                </tr>
-            `;
-        });
-    }
-
-    // Tambah Data ke Database Supabase
-    document.getElementById('add-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const nis = document.getElementById('nis').value;
-        const nama = document.getElementById('nama').value;
-        const jurusan = document.getElementById('jurusan').value;
-        const alamat = document.getElementById('alamat').value;
-
-        const { error } = await _supabase.from('siswa').insert([{ nis, nama, jurusan, alamat }]);
-
-        if (!error) {
-            alert('Data berhasil disimpan!');
-            document.getElementById('add-form').reset();
-            loadData();
-        } else {
-            alert('Gagal menambah data!');
-        }
-    });
-</script>
+<div class="bubble"></div>
+<div class="bubble"></div>
 
 </body>
 </html>
